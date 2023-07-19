@@ -2,7 +2,7 @@
 - hosts: all
   become: true
   roles:
-    - role: dynatrace.oneagent
+    - role: dynatrace.oneagent_deploy.oneagent
   vars:
     dynatrace_environment_url: "{{ dynatrace_url }}"
     dynatrace_paas_token: "{{ dynatrace_token }}"
