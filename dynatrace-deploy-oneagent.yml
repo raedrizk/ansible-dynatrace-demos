@@ -10,11 +10,11 @@
     ansible.builtin.dnf:
       name: wget
       state: latest
-      
+
   - name: Download the installer using this command on the target host
     ansible.builtin.command: |
                           wget -O Dynatrace-OneAgent-Linux-1.269.166.20230715-203547.sh "https://{{ dynatrace_url }}/api/v1/deployment/installer/agent/unix/default/latest?arch=x86&flavor=default" --header="Authorization: Api-Token {{ dynatrace_token }}"
-    no_log: true
+    # no_log: true
 
   - name: Run the installer with root rights
     ansible.builtin.command: /bin/sh Dynatrace-OneAgent-Linux-1.269.166.20230715-203547.sh --set-infra-only=false --set-app-log-content-access=true
