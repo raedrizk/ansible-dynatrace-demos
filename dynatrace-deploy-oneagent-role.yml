@@ -4,5 +4,5 @@
   roles:
     - role: dynatrace.oneagent_deploy.oneagent
   vars:
-    dynatrace_environment_url: "{{ dynatrace_url }}"
-    dynatrace_paas_token: "{{ dynatrace_token }}"
+    oneagent_environment_url: "{{ dynatrace_url }}"
+    oneagent_paas_token: "{{ dynatrace_token }}"
