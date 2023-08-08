@@ -1,0 +1,7 @@
+---
+- name: Uninstall one agent
+  hosts: all
+  become: true
+  tasks:
+  - name: Run the installer with root rights
+    ansible.builtin.command: /bin/sh /opt/dynatrace/oneagent/agent/uninstall.sh
