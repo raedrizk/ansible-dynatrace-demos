@@ -1,0 +1,12 @@
+---
+- name: Gather tcpdump from reporting host
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Information Message
+      ansible.builtin.debug:
+        var: impactedEntity
+
+    - name: Information Message
+      ansible.builtin.debug:
+        var: problemDetails

@@ -1,0 +1,55 @@
+---
+- name: Gather tcpdump from reporting host
+  hosts: "{{ ImpactedEntityNames }}"
+  vars:
+    capture_file_name: packet_capture_{{ ansible_hostname }}_{{ ansible_date_time['epoch'] }}.pcap
+    capture_dest_folder: /tmp
+    capture_duration: 30
+    snow_caller: "{{ snow_caller_choice | default('rsoliman') }}"
+    snow_inc_short_desc: "{{ snow_inc_short_desc }}"
+    snow_inc_desc: "{{ snow_inc_short_desc }}"
+    snow_inc_urgency: "{{ snow_inc_urgency_choice | default('medium') }}" 
+    snow_inc_impact: "{{ snow_inc_impact_choice | default('medium') }}" 
+  tasks:
+    - name: Information Message
+      ansible.builtin.debug:
+        msg: "Attempting to resolve and report on the {{ reported_saturation_problem_type }} saturation issue reported on {{ reporting_host }}"
+
+    - name: Capture a {{ capture_duration }} second TCP dump
+      ansible.builtin.command: sudo /usr/sbin/tcpdump -G {{ capture_duration }} -W 1 -s 0 -w {{ capture_dest_folder }}/{{ capture_file_name}}
+
+    - name: Download dump file
+      ansible.builtin.fetch:
+        src: "{{ capture_dest_folder }}/{{ capture_file_name}}"
+        dest: /tmp
+
+    - name: Create a new incident
+      servicenow.itsm.incident:
+        state: new
+        caller: "{{ snow_caller }}"
+        short_description: "{{ snow_inc_short_desc }}"
+        # attachments:
+        # - path: /tmp/{{ reporting_host }}/var/log/dnf
+        description: "{{ snow_inc_desc }}"
+        impact: "{{ snow_inc_impact }}"
+        urgency: "{{ snow_inc_urgency }}"
+        other:
+          category: "Software"
+      environment:
+        SN_HOST: "https://{{ snow_instance }}.service-now.com"
+        SN_USERNAME: "{{ snow_username }}"
+        SN_PASSWORD: "{{ snow_password }}"
+      register: snow_incident
+      delegate_to: localhost
+      run_once: True
+
+    - name: Print incident number
+      ansible.builtin.debug:
+        var: snow_incident.record.number
+      delegate_to: localhost
+      run_once: True
+
+    - name: remove files from server
+      ansible.builtin.file: 
+        path: "{{ capture_dest_folder }}/{{ capture_file_name}}"
+        state: absent
