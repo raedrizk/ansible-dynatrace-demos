@@ -7,8 +7,8 @@
     capture_dest_folder: /tmp
     capture_duration: 30
     snow_caller: "{{ snow_caller_choice | default('rsoliman') }}"
-    snow_inc_short_desc: "{{ snow_inc_short_desc }}"
-    snow_inc_desc: "{{ snow_inc_short_desc }}"
+    snow_inc_short_desc: "{{ ImpactedEntity }}"
+    snow_inc_desc: "{{ ImpactedEntity }}"
     snow_inc_urgency: "{{ snow_inc_urgency_choice | default('medium') }}" 
     snow_inc_impact: "{{ snow_inc_impact_choice | default('medium') }}" 
   tasks:
