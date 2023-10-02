@@ -15,6 +15,11 @@
       ansible.builtin.debug:
         msg: Attempting to resolve and report on the {{ ImpactedEntity }}
 
+    - name: Make sure tcpdump is available
+      ansible.builtin.dnf:
+        name: tcpdump
+        state: present
+        
     - name: Capture a {{ capture_duration }} second TCP dump
       ansible.builtin.command: sudo /usr/sbin/tcpdump -G {{ capture_duration }} -W 1 -s 0 -w {{ capture_dest_folder }}/{{ capture_file_name}}
 
