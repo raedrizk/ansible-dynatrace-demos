@@ -1,6 +1,7 @@
 ---
 - name: Gather tcpdump from reporting host
   hosts: "{{ ImpactedEntityNames }}"
+  become: true
   vars:
     capture_file_name: packet_capture_{{ ansible_hostname }}_{{ ansible_date_time['epoch'] }}.pcap
     capture_dest_folder: /tmp
@@ -19,7 +20,7 @@
       ansible.builtin.dnf:
         name: tcpdump
         state: present
-        
+
     - name: Capture a {{ capture_duration }} second TCP dump
       ansible.builtin.command: sudo /usr/sbin/tcpdump -G {{ capture_duration }} -W 1 -s 0 -w {{ capture_dest_folder }}/{{ capture_file_name}}
 
