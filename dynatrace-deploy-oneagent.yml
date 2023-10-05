@@ -17,4 +17,4 @@
    # no_log: true
 
   - name: Run the installer with root rights
-    ansible.builtin.command: /bin/sh Dynatrace-OneAgent-Linux-1.269.166.20230715-203547.sh --set-infra-only=false --set-app-log-content-access=true
+    ansible.builtin.command: /bin/sh Dynatrace-OneAgent-Linux-1.269.166.20230715-203547.sh --set-infra-only=false --set-app-log-content-access=true --set-host-name={{ ansible_hostname }}
