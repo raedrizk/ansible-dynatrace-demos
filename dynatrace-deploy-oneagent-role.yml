@@ -1,6 +1,6 @@
 ---
-- hosts: all
-  become: true
+- name: Deploy Dynatrace OneAgent using the Dynatrace OneAgent role
+  hosts: all
   vars:
     oneagent_environment_url: "{{ dynatrace_url }}"
     oneagent_paas_token: "{{ dynatrace_token }}"
