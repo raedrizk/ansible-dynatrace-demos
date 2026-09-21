@@ -1,0 +1,14 @@
+---
+- name: install one agent on windows
+  hosts: all
+  vars:
+    dynatrace_environment_url: "{{ dynatrace_url }}"
+    dynatrace_paas_token: "{{ dynatrace_token }}"
+  tasks:
+
+
+  - name: Download the installer
+    ansible.windows.win_command: powershell -command "$ProgressPreference = 'SilentlyContinue'; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://{{ dynatrace_url }}/api/v1/deployment/installer/agent/windows/default/latest?arch=x86' -Headers @{ 'Authorization' = 'Api-Token {{ dynatrace_token }}' } -OutFile 'Dynatrace-OneAgent-Windows-1.345.81.20260917-170831.exe'"
+
+  - name: Run the installer
+    ansible.builtin.win_command: .\Dynatrace-OneAgent-Windows-1.345.81.20260917-170831.exe --set-monitoring-mode=fullstack --set-app-log-content-access=true
