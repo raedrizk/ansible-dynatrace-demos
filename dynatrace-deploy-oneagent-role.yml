@@ -1,8 +1,10 @@
 ---
 - hosts: all
   become: true
-  roles:
-    - role: dynatrace.oneagent_deploy.oneagent
   vars:
     oneagent_environment_url: "{{ dynatrace_url }}"
     oneagent_paas_token: "{{ dynatrace_token }}"
+  tasks:
+    - name: Import Dynatrace OneAgent role
+      ansible.builtin.import_role:
+        name: dynatrace.oneagent.oneagent
